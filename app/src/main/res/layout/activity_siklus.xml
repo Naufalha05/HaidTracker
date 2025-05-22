@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="Home.SiklusActivity"
+    android:background="@android:color/white">
+
+    <!-- Menu Bar -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/menu_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_sort_by_size"
+        android:layout_alignParentStart="true"
+        app:tint="#ff66b1" />
+
+    <!-- Judul -->
+    <TextView
+        android:id="@+id/header_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Siklus Anda saat ini"
+        android:textColor="#ff66b1"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/menu_icon"
+        android:layout_marginTop="2dp" />
+
+    <!-- Bottom Navigation Bar -->
+    <LinearLayout
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!-- Left Icons -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:background="#FF69B4"
+            android:gravity="center"
+            android:layout_marginEnd="4dp"
+            android:padding="8dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/menu_siklus"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_cycle"
+                app:tint="@android:color/white"
+                android:layout_marginEnd="8dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/menu_calender"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_calender"
+                app:tint="@android:color/white" />
+        </LinearLayout>
+
+        <!-- Center FAB -->
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:background="@drawable/fab_circle"
+            android:layout_marginHorizontal="4dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="+"
+                android:textSize="32sp"
+                android:gravity="center"
+                android:textColor="#800000" />
+        </FrameLayout>
+
+        <!-- Right Icons -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:background="#FF69B4"
+            android:gravity="center"
+            android:layout_marginStart="4dp"
+            android:padding="8dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/analisis"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_analisis"
+                app:tint="@android:color/white"
+                android:layout_marginEnd="8dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/content"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_book"
+                app:tint="#ffffff" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
