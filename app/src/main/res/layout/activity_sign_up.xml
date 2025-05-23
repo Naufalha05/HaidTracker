@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context="login.SignUpActivity">
+    tools:context="Page.SignUpActivity">
 
     <!-- Tombol Kembali -->
     <ImageButton
@@ -51,7 +51,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Daftar"
+                android:text="Sign Up"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="#ff66b1"
@@ -80,10 +80,10 @@
                         android:layout_height="wrap_content"
                         android:hint="Nama"
                         app:boxBackgroundMode="outline"
-                        app:boxCornerRadiusBottomEnd="16dp"
-                        app:boxCornerRadiusBottomStart="16dp"
-                        app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
                         app:boxStrokeColor="#C2185B">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -106,10 +106,10 @@
                         android:layout_height="wrap_content"
                         android:hint="Email"
                         app:boxBackgroundMode="outline"
-                        app:boxCornerRadiusBottomEnd="16dp"
-                        app:boxCornerRadiusBottomStart="16dp"
-                        app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
                         app:boxStrokeColor="#C2185B">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -132,42 +132,15 @@
                         android:layout_height="wrap_content"
                         android:hint="Kata Sandi"
                         app:boxBackgroundMode="outline"
-                        app:boxCornerRadiusBottomEnd="16dp"
-                        app:boxCornerRadiusBottomStart="16dp"
-                        app:boxCornerRadiusTopEnd="16dp"
                         app:boxCornerRadiusTopStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
                         app:boxStrokeColor="#C2185B"
                         app:endIconMode="password_toggle">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/password"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins"
-                            android:inputType="textPassword"
-                            android:textColor="#C2185B" />
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- Spacer -->
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="16dp" />
-
-                    <!-- Konfirmasi Password -->
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Konfirmasi Kata Sandi"
-                        app:boxBackgroundMode="outline"
-                        app:boxCornerRadiusBottomEnd="16dp"
-                        app:boxCornerRadiusBottomStart="16dp"
-                        app:boxCornerRadiusTopEnd="16dp"
-                        app:boxCornerRadiusTopStart="16dp"
-                        app:boxStrokeColor="#C2185B"
-                        app:endIconMode="password_toggle">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/confirmPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
@@ -189,7 +162,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Link ke Login -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -213,8 +185,6 @@
                     android:textStyle="bold"/>
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

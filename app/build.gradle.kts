@@ -38,12 +38,9 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    // ✅ Tambahkan OkHttp untuk koneksi jaringan
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-
-    // ✅ Tambahkan Gson (opsional, untuk parsing JSON lebih mudah)
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

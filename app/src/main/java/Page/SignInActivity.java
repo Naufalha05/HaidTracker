@@ -1,4 +1,4 @@
-package com.example.haidtracker;
+package Page;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,13 +12,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.haidtracker.R;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 
 import Home.SiklusActivity;
-import login.SignUpActivity;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -27,7 +28,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class SignInActivity extends AppCompatActivity {
 
     private EditText emailEditText, passwordEditText;
     private CheckBox rememberMeCheckBox;
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView daftarText;
 
     private final OkHttpClient client = new OkHttpClient();
-    private static final String LOGIN_URL = "https://haidtracker-backend-production.up.railway.app/auth/login";
+    private static final String LOGIN_URL = "https://haidtracker.up.railway.app/auth/login";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     private static final String PREFS_NAME = "HaidTrackerPrefs";
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_sign_in); // pastikan ini sesuai nama file XML
 
         // Inisialisasi view
         emailEditText = findViewById(R.id.email);
@@ -57,42 +58,35 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         String token = prefs.getString(PREF_TOKEN, null);
         if (token != null) {
-            // Jika token ada, langsung masuk ke halaman SiklusActivity
             navigateToSiklusActivity();
         }
 
-        // Aksi klik tombol login
         loginButton.setOnClickListener(view -> {
             String email = emailEditText.getText().toString().trim();
             String password = passwordEditText.getText().toString().trim();
 
             if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                Toast.makeText(this, "Email dan kata sandi harus diisi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Email dan kata sandi wajib diisi.", Toast.LENGTH_SHORT).show();
             } else {
                 loginUser(email, password);
             }
         });
 
-        // Aksi klik teks daftar
         daftarText.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
-            startActivity(intent);
+            startActivity(new Intent(this, SignUpActivity.class));
         });
     }
 
     private void loginUser(String email, String password) {
-        // Buat JSON untuk dikirim ke server
         JSONObject json = new JSONObject();
         try {
             json.put("email", email);
             json.put("password", password);
         } catch (JSONException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Terjadi kesalahan saat membuat data login.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Gagal membuat data login.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Kirim permintaan POST menggunakan OkHttp
         RequestBody body = RequestBody.create(json.toString(), JSON);
         Request request = new Request.Builder()
                 .url(LOGIN_URL)
@@ -102,8 +96,7 @@ public class MainActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-                // Tangani kegagalan koneksi
-                runOnUiThread(() -> Toast.makeText(MainActivity.this, "Gagal terhubung ke server", Toast.LENGTH_SHORT).show());
+                runOnUiThread(() -> Toast.makeText(SignInActivity.this, "Tidak dapat terhubung ke server.", Toast.LENGTH_SHORT).show());
             }
 
             @Override
@@ -115,24 +108,21 @@ public class MainActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             String token = jsonResponse.optString("token", null);
                             if (token != null && !token.isEmpty()) {
-                                // Simpan token jika opsi "Remember Me" dipilih
                                 if (rememberMeCheckBox.isChecked()) {
                                     SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, MODE_PRIVATE).edit();
                                     editor.putString(PREF_TOKEN, token);
                                     editor.apply();
                                 }
-                                // Pindah ke halaman SiklusActivity
                                 navigateToSiklusActivity();
                             } else {
-                                Toast.makeText(MainActivity.this, "Token tidak ditemukan dalam respons.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SignInActivity.this, "Token tidak ditemukan di respons.", Toast.LENGTH_SHORT).show();
                             }
                         } else {
-                            String errorMessage = jsonResponse.optString("message", "Login gagal. Periksa kembali email dan kata sandi Anda.");
-                            Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                            String error = jsonResponse.optString("message", "Login gagal.");
+                            Toast.makeText(SignInActivity.this, error, Toast.LENGTH_SHORT).show();
                         }
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                        Toast.makeText(MainActivity.this, "Terjadi kesalahan saat memproses respons server.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this, "Kesalahan membaca data dari server.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -140,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void navigateToSiklusActivity() {
-        Intent intent = new Intent(MainActivity.this, SiklusActivity.class);
+        Intent intent = new Intent(SignInActivity.this, SiklusActivity.class);
         startActivity(intent);
         finish();
     }

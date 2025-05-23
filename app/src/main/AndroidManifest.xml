@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.haidtracker">
 
-    <!-- Izin untuk akses internet -->
+    <!-- Izin akses internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -16,8 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HaidTracker"
         tools:targetApi="31">
+
         <activity
-            android:name="Home.ProfilActivity"
+            android:name="Home.ProfileActivity"
             android:exported="false" />
         <activity
             android:name="Home.SiklusActivity"
@@ -29,19 +30,17 @@
             android:name="Home.AnalisisActivity"
             android:exported="false" />
         <activity
-            android:name="login.SignUpActivity"
+            android:name="Page.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name="login.LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name="Page.SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

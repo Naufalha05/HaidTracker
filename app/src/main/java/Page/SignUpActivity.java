@@ -1,9 +1,8 @@
-package login;
+package Page;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -28,13 +27,13 @@ import okhttp3.Response;
 
 public class SignUpActivity extends AppCompatActivity {
 
-    private TextInputEditText nameEditText, emailEditText, passwordEditText, confirmPasswordEditText;
+    private TextInputEditText nameEditText, emailEditText, passwordEditText;
     private Button btnRegister;
     private ImageButton btnBack;
     private TextView loginLink;
 
     private final OkHttpClient client = new OkHttpClient();
-    private static final String REGISTER_URL = "https://haidtracker-backend-production.up.railway.app/auth/register";
+    private static final String REGISTER_URL = "https://haidtracker.up.railway.app/auth/register";
     private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     @Override
@@ -46,7 +45,6 @@ public class SignUpActivity extends AppCompatActivity {
         nameEditText = findViewById(R.id.name);
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
-        confirmPasswordEditText = findViewById(R.id.confirmPassword);
         btnRegister = findViewById(R.id.btnRegister);
         btnBack = findViewById(R.id.btnBack);
         loginLink = findViewById(R.id.login);
@@ -59,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
 
         // Tautan ke halaman Login
         loginLink.setOnClickListener(v -> {
-            Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
             startActivity(intent);
             finish();
         });
@@ -69,16 +67,9 @@ public class SignUpActivity extends AppCompatActivity {
         String nama = nameEditText.getText().toString().trim();
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString();
-        String konfirmasi = confirmPasswordEditText.getText().toString();
 
-        if (TextUtils.isEmpty(nama) || TextUtils.isEmpty(email) ||
-                TextUtils.isEmpty(password) || TextUtils.isEmpty(konfirmasi)) {
+        if (TextUtils.isEmpty(nama) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Harap isi semua kolom!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (!password.equals(konfirmasi)) {
-            Toast.makeText(this, "Konfirmasi kata sandi tidak cocok!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -111,14 +102,11 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
-                    // Tangani respons sukses
-                    String responseData = response.body().string();
                     runOnUiThread(() -> {
                         Toast.makeText(SignUpActivity.this, "Pendaftaran berhasil!", Toast.LENGTH_SHORT).show();
-                        // Lanjutkan ke aktivitas berikutnya atau simpan token jika diperlukan
+                        // Bisa lanjut ke halaman berikutnya atau simpan token jika perlu
                     });
                 } else {
-                    // Tangani respons gagal
                     runOnUiThread(() -> Toast.makeText(SignUpActivity.this, "Pendaftaran gagal", Toast.LENGTH_SHORT).show());
                 }
             }

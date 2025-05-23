@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,7 +6,7 @@
     tools:context="Home.SiklusActivity"
     android:background="@android:color/white">
 
-    <!-- Menu Bar -->
+    <!-- Menu Bar kiri -->
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/menu_icon"
         android:layout_width="24dp"
@@ -16,9 +14,25 @@
         android:layout_margin="16dp"
         android:src="@android:drawable/ic_menu_sort_by_size"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         app:tint="#ff66b1" />
 
-    <!-- Judul -->
+    <!-- Tombol Logout kanan atas -->
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_logout"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Logout"
+        android:src="@drawable/ic_logout"
+        android:scaleType="centerInside"
+        app:tint="#ff66b1" />
+
+
+    <!-- Judul di tengah atas -->
     <TextView
         android:id="@+id/header_title"
         android:layout_width="wrap_content"
@@ -27,7 +41,7 @@
         android:textColor="#ff66b1"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
-        android:layout_alignTop="@+id/menu_icon"
+        android:layout_alignTop="@id/menu_icon"
         android:layout_marginTop="2dp" />
 
     <!-- Bottom Navigation Bar -->
@@ -70,6 +84,7 @@
 
         <!-- Center FAB -->
         <FrameLayout
+            android:id="@+id/fab_plus"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center"
