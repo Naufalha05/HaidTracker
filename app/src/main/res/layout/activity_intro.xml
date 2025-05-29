@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF0F5">
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/intro_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_controls"
+        android:clipToPadding="false"
+        android:clipChildren="false"
+        android:overScrollMode="never" />
+
+    <LinearLayout
+        android:id="@+id/bottom_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="@drawable/bottom_gradient">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="12dp">
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tab_indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:tabBackground="@drawable/indicator_selector"
+                app:tabGravity="center"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingStart="6dp"
+                app:tabPaddingEnd="6dp"
+                app:tabMinWidth="0dp"
+                app:tabRippleColor="@android:color/transparent" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/button_rounded"
+            android:text="Selanjutnya"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:elevation="4dp"
+            android:stateListAnimator="@null" />
+
+        <TextView
+            android:id="@+id/tv_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:text="Lewati"
+            android:textColor="#D81B60"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+    </LinearLayout>
+
+</RelativeLayout>
