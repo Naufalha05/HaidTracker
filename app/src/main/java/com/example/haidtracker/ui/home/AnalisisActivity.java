@@ -1,4 +1,4 @@
-package Home;
+package com.example.haidtracker.ui.home;
 
 import android.os.Bundle;
 

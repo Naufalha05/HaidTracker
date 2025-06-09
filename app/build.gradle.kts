@@ -30,25 +30,33 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     buildFeatures {
         viewBinding = true
     }
 }
 
 dependencies {
+    // AndroidX & UI
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
 
-    // Retrofit and networking
+    // Networking
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
     implementation(libs.gson)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
+
+    // Navigation
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+
+    // 📊 GraphView (Sudah Ditambahkan)
+    // GUNAKAN ini (AndroidX-compatible)
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Testing
     testImplementation(libs.junit)

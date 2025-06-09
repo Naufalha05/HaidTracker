@@ -1,4 +1,4 @@
-package Home;
+package com.example.haidtracker.ui.siklus;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.haidtracker.R;
 
-import Page.SignInActivity;
+import com.example.haidtracker.ui.auth.SignInActivity;
+import com.example.haidtracker.ui.home.AnalisisActivity;
+import com.example.haidtracker.ui.calender.CalenderActivity;
+import com.example.haidtracker.ui.profile.ProfileActivity;
 
 public class SiklusActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.haidtracker;
+package com.example.haidtracker.ui.intro;
 public class IntroSlide {
     private int imageResId;
     private String title;

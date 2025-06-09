@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.haidtracker">
-
     <!-- Izin akses internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -16,54 +15,56 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HaidTracker"
         tools:targetApi="31">
-
-        <!-- SplashActivity sebagai entry point -->
+        <activity
+            android:name=".ui.analytics.AnalyticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.content.ContentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.content"
+            android:exported="false" />
+        <activity
+            android:name=".data.api.TesActivity"
+            android:exported="false" /> <!-- SplashActivity sebagai entry point -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.HaidTracker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Intro Slides -->
+        </activity> <!-- Intro Slides -->
         <activity
-            android:name=".IntroSlide"
+            android:name=".ui.intro.IntroSlide"
             android:exported="false"
             tools:ignore="Instantiatable" />
         <activity
-            android:name=".IntroActivity"
-            android:exported="false" />
-
-        <!-- Main -->
+            android:name=".ui.intro.IntroActivity"
+            android:exported="false" /> <!-- Main -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-
-        <!-- Page Login/Register -->
+            android:exported="false" /> <!-- Page Login/Register -->
         <activity
-            android:name="Page.SignInActivity"
+            android:name=".ui.auth.SignInActivity"
             android:exported="false" />
         <activity
-            android:name="Page.SignUpActivity"
-            android:exported="false" />
-
-        <!-- Home Pages -->
+            android:name=".ui.auth.SignUpActivity"
+            android:exported="false" /> <!-- Home Pages -->
         <activity
-            android:name="Home.ProfileActivity"
+            android:name=".ui.profile.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name="Home.SiklusActivity"
+            android:name=".ui.siklus.SiklusActivity"
             android:exported="false" />
         <activity
-            android:name="Home.CalenderActivity"
+            android:name=".ui.calender.CalenderActivity"
             android:exported="false" />
         <activity
-            android:name="Home.AnalisisActivity"
+            android:name=".ui.home.AnalisisActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

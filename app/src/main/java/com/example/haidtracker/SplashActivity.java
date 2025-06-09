@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.haidtracker.ui.intro.IntroActivity;
+
 public class SplashActivity extends AppCompatActivity {
 
     private static final int SPLASH_TIMEOUT = 3000; // 3 seconds

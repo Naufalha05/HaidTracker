@@ -1,4 +1,4 @@
-package com.example.haidtracker;
+package com.example.haidtracker.ui.intro;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -9,21 +9,20 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.haidtracker.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import Page.SignInActivity;
+import com.example.haidtracker.ui.auth.SignInActivity;
 
 public class IntroActivity extends AppCompatActivity {
 
