@@ -54,9 +54,8 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
 
-    // 📊 GraphView (Sudah Ditambahkan)
-    // GUNAKAN ini (AndroidX-compatible)
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    // 📊 MPAndroidChart (Kini Konsisten via libs)
+    implementation(libs.mpandroidchart)
 
     // Testing
     testImplementation(libs.junit)
