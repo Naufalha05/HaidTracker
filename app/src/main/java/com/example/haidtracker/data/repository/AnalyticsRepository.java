@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import com.example.haidtracker.data.model.analytics.AnalyticsData;
 import com.example.haidtracker.data.model.analytics.DailyNote;
-import com.jjoe64.graphview.series.DataPoint;
+import com.github.mikephil.charting.data.Entry; // <<< BARIS INI DITAMBAHKAN (untuk MPAndroidChart)
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,16 +56,18 @@ public class AnalyticsRepository {
         }
     }
 
-    public List<DataPoint> getGraphData() {
-        List<DataPoint> dataPoints = new ArrayList<>();
+    // --- PERUBAHAN UTAMA ADA DI METODE INI ---
+    public List<Entry> getGraphData() { // <<< UBAH TIPE RETURN DARI List<DataPoint> MENJADI List<Entry>
+        List<Entry> dataPoints = new ArrayList<>(); // <<< UBAH TIPE LIST DARI DataPoint MENJADI Entry
 
         try {
             // Generate sample data for the last 7 days
             // In a real app, this would come from stored daily notes
             for (int i = 0; i < 7; i++) {
-                double x = i + 1; // Day
-                double y = generateSampleIntensity(i); // Intensity (0-5)
-                dataPoints.add(new DataPoint(x, y));
+                // MPAndroidChart's Entry constructor takes float for x and y values
+                float x = (float) (i + 1); // Cast double to float
+                float y = (float) generateSampleIntensity(i); // Cast double to float
+                dataPoints.add(new Entry(x, y)); // <<< GANTI new DataPoint() MENJADI new Entry()
             }
 
         } catch (Exception e) {
@@ -75,6 +77,7 @@ public class AnalyticsRepository {
 
         return dataPoints;
     }
+    // --- AKHIR PERUBAHAN UTAMA ---
 
     public boolean saveDailyNote(DailyNote note) {
         try {

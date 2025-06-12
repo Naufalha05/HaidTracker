@@ -16,9 +16,25 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.haidtracker.R;
 import com.example.haidtracker.data.model.analytics.AnalyticsData;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+
+// IMPOR MPAndroidChart
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry; // Penting: Ini Entry dari MPAndroidChart
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate; // Untuk warna default
+
+// IMPOR GraphView DIHAPUS
+// import com.jjoe64.graphview.GraphView;
+// import com.jjoe64.graphview.series.DataPoint;
+// import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.util.ArrayList; // Pastikan ini ada
+import java.util.List; // Pastikan ini ada
 
 public class AnalyticsActivity extends AppCompatActivity {
 
@@ -32,7 +48,7 @@ public class AnalyticsActivity extends AppCompatActivity {
     private EditText etVolume;
     private EditText etKeluhan;
     private Button btnSimpan;
-    private GraphView graphView;
+    private LineChart lineChart; // <<< UBAH DARI GraphView menjadi LineChart
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,21 +84,76 @@ public class AnalyticsActivity extends AppCompatActivity {
         etVolume = findViewById(R.id.et_volume);
         etKeluhan = findViewById(R.id.et_keluhan);
         btnSimpan = findViewById(R.id.btn_simpan);
-        graphView = findViewById(R.id.graph);
+        lineChart = findViewById(R.id.graph); // <<< UBAH DARI graphView menjadi lineChart
 
-        setupGraph();
+        setupChart(); // <<< UBAH NAMA METODE
     }
 
-    private void setupGraph() {
-        // Setup graph properties
-        graphView.getGridLabelRenderer().setHorizontalAxisTitle("Hari");
-        graphView.getGridLabelRenderer().setVerticalAxisTitle("Intensitas");
-        graphView.getViewport().setYAxisBoundsManual(true);
-        graphView.getViewport().setMinY(0);
-        graphView.getViewport().setMaxY(5);
-        graphView.getViewport().setScrollable(true);
-        graphView.getViewport().setScalable(true);
+    // --- AWAL PERUBAHAN CHARTING DENGAN MPAndroidChart ---
+    private void setupChart() { // <<< UBAH NAMA METODE
+        // Basic chart setup
+        lineChart.getDescription().setEnabled(false); // Sembunyikan deskripsi
+        lineChart.setTouchEnabled(true);
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleEnabled(true);
+        lineChart.setPinchZoom(true);
+        lineChart.setDrawGridBackground(false);
+
+        // X-axis setup
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Posisi label X di bawah
+        xAxis.setDrawGridLines(false); // Sembunyikan garis grid vertikal
+        xAxis.setGranularity(1f); // Interval 1 untuk label
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(new String[]{"1", "2", "3", "4", "5", "6", "7"})); // Contoh label hari
+
+        // Left Y-axis setup
+        YAxis leftAxis = lineChart.getAxisLeft();
+        leftAxis.setAxisMinimum(0f); // Minimum Y
+        leftAxis.setAxisMaximum(5f); // Maximum Y
+        leftAxis.setDrawGridLines(true); // Tampilkan garis grid horizontal
+        leftAxis.setGranularity(1f); // Interval 1 untuk label
+
+        // Right Y-axis (disable if not needed)
+        lineChart.getAxisRight().setEnabled(false); // Matikan Y-axis kanan
+
+        lineChart.animateX(1500); // Animasi pada sumbu X
     }
+
+    private void updateGraph(List<Entry> dataPoints) { // <<< UBAH TIPE PARAMETER KE List<Entry>
+        LineDataSet dataSet;
+
+        if (lineChart.getData() != null && lineChart.getData().getDataSetCount() > 0) {
+            // Jika data sudah ada, update data yang ada
+            dataSet = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
+            dataSet.setValues(dataPoints);
+            lineChart.getData().notifyDataChanged();
+            lineChart.notifyDataSetChanged();
+        } else {
+            // Jika belum ada data, buat dataset baru
+            dataSet = new LineDataSet(dataPoints, "Intensitas Aliran"); // Label dataset
+
+            // Kustomisasi penampilan dataset
+            dataSet.setColor(getResources().getColor(R.color.pink_primary, null)); // Warna garis
+            dataSet.setCircleColor(getResources().getColor(R.color.pink_primary, null)); // Warna titik
+            dataSet.setLineWidth(3f); // Ketebalan garis
+            dataSet.setCircleRadius(5f); // Ukuran titik
+            dataSet.setDrawCircleHole(false); // Jangan gambar lubang di titik
+            dataSet.setValueTextSize(9f); // Ukuran teks nilai di atas titik
+            dataSet.setDrawValues(false); // Jangan tampilkan nilai di atas titik
+            dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER); // Garis melengkung
+            dataSet.setDrawFilled(true); // Isi area di bawah garis
+            dataSet.setFillColor(getResources().getColor(R.color.pink_primary, null)); // Warna isi area
+
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(dataSet);
+
+            LineData data = new LineData(dataSets);
+            lineChart.setData(data);
+        }
+
+        lineChart.invalidate(); // Refresh chart
+    }
+    // --- AKHIR PERUBAHAN CHARTING DENGAN MPAndroidChart ---
 
     private void setupObservers() {
         // Observe analytics data
@@ -95,7 +166,7 @@ public class AnalyticsActivity extends AppCompatActivity {
         // Observe graph data
         viewModel.getGraphData().observe(this, graphData -> {
             if (graphData != null && !graphData.isEmpty()) {
-                updateGraph(graphData);
+                updateGraph(graphData); // <<< MEMANGGIL UPDATE DENGAN List<Entry>
             }
         });
 
@@ -142,19 +213,7 @@ public class AnalyticsActivity extends AppCompatActivity {
         tvSiklus.setText(data.getSiklusTerakhir() + " Hari");
     }
 
-    private void updateGraph(java.util.List<DataPoint> dataPoints) {
-        DataPoint[] points = dataPoints.toArray(new DataPoint[0]);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(points);
-
-        // Customize series appearance
-        series.setColor(getResources().getColor(R.color.pink_primary, null));
-        series.setThickness(8);
-        series.setDrawDataPoints(true);
-        series.setDataPointsRadius(10);
-
-        graphView.removeAllSeries();
-        graphView.addSeries(series);
-    }
+    // Metode updateGraph yang lama dihapus karena sudah diubah di atas
 
     private void clearInputFields() {
         etVolume.setText("");

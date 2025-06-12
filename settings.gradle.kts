@@ -16,6 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://www.jitpack.io") } // <<< INI YANG BENAR UNTUK KOTLIN DSL (.kts)
     }
 }
 

@@ -9,7 +9,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.haidtracker.data.model.analytics.AnalyticsData;
 import com.example.haidtracker.data.model.analytics.DailyNote;
 import com.example.haidtracker.data.repository.AnalyticsRepository;
-import com.jjoe64.graphview.series.DataPoint;
+
+// IMPOR MPAndroidChart
+import com.github.mikephil.charting.data.Entry; // Penting: Ini Entry dari MPAndroidChart
+
+// IMPOR GraphView DIHAPUS
+// import com.jjoe64.graphview.series.DataPoint;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,7 +31,7 @@ public class AnalyticsViewModel extends AndroidViewModel {
 
     // LiveData for UI
     private final MutableLiveData<AnalyticsData> analyticsData = new MutableLiveData<>();
-    private final MutableLiveData<List<DataPoint>> graphData = new MutableLiveData<>();
+    private final MutableLiveData<List<Entry>> graphData = new MutableLiveData<>(); // <<< UBAH DARI List<DataPoint> MENJADI List<Entry>
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>(false);
     private final MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private final MutableLiveData<String> successMessage = new MutableLiveData<>();
@@ -42,7 +47,7 @@ public class AnalyticsViewModel extends AndroidViewModel {
         return analyticsData;
     }
 
-    public LiveData<List<DataPoint>> getGraphData() {
+    public LiveData<List<Entry>> getGraphData() { // <<< UBAH DARI List<DataPoint> MENJADI List<Entry>
         return graphData;
     }
 
@@ -65,7 +70,7 @@ public class AnalyticsViewModel extends AndroidViewModel {
             try {
                 // Simulate loading analytics data
                 AnalyticsData data = repository.getAnalyticsData();
-                List<DataPoint> points = repository.getGraphData();
+                List<Entry> points = repository.getGraphData(); // <<< repository.getGraphData() sekarang mengembalikan List<Entry>
 
                 // Post results on main thread
                 analyticsData.postValue(data);
