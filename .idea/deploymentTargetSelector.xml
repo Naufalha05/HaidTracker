@@ -4,17 +4,14 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-05-15T19:39:18.125570800Z">
+        <DropdownSelection timestamp="2025-06-12T08:53:11.046001700Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Modern 14\.android\avd\Medium_Phone_API_Baklava.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\Modern 14\.android\avd\Pixel_8_Pro_API_Baklava.avd" />
             </handle>
           </Target>
         </DropdownSelection>
         <DialogSelection />
-      </SelectionState>
-      <SelectionState runConfigName="SplashActivity">
-        <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>
   </component>

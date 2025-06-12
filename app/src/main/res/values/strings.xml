@@ -42,4 +42,45 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <?xml version="1.0" encoding="utf-8"?>
+    <resources>
+
+
+        <!-- Reminder Strings -->
+        <string name="reminder_title">Pengingat Siklus</string>
+        <string name="reminder_subtitle">Atur pengingat untuk siklus menstruasi Anda</string>
+        <string name="enable_reminder">Aktifkan Pengingat</string>
+        <string name="reminder_time">Waktu Pengingat</string>
+        <string name="remind_before">Ingatkan Sebelum</string>
+        <string name="notification_type">Jenis Notifikasi</string>
+        <string name="additional_settings">Pengaturan Tambahan</string>
+
+        <!-- Notification Strings -->
+        <string name="notification_title">Pengingat Siklus Menstruasi</string>
+        <string name="notification_text">Siklus menstruasi Anda akan dimulai dalam beberapa hari</string>
+        <string name="notification_big_text">Halo! Berdasarkan prediksi, siklus menstruasi Anda akan dimulai dalam beberapa hari. Pastikan Anda sudah mempersiapkan kebutuhan yang diperlukan.</string>
+
+        <!-- Options -->
+        <string name="sound_only">Hanya Suara</string>
+        <string name="vibrate_only">Hanya Getar</string>
+        <string name="sound_vibrate">Suara &amp; Getar</string>
+        <string name="silent">Hening</string>
+
+        <!-- Days Before Options -->
+        <string name="one_day_before">1 hari sebelum</string>
+        <string name="two_days_before">2 hari sebelum</string>
+        <string name="three_days_before">3 hari sebelum</string>
+        <string name="five_days_before">5 hari sebelum</string>
+        <string name="seven_days_before">7 hari sebelum</string>
+
+        <!-- Messages -->
+        <string name="reminder_enabled">Pengingat diaktifkan</string>
+
+        <string name="reminder_disabled">Pengingat dinonaktifkan</string>
+        <string name="data_refreshed">Data diperbarui</string>
+
+        <!-- Dialog Titles -->
+        <string name="select_time">Pilih Waktu Pengingat</string>
+        <string name="select_notification_type">Pilih Jenis Notifikasi</string>
+    </resources>
 </resources>

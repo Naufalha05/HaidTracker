@@ -4,6 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.haidtracker.data.model.analytics.AnalyticsData;
+import com.example.haidtracker.data.api.ApiService;
+import com.example.haidtracker.data.model.analytic.Analytic;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import com.example.haidtracker.data.model.analytics.DailyNote;
 import com.github.mikephil.charting.data.Entry; // <<< BARIS INI DITAMBAHKAN (untuk MPAndroidChart)
 
@@ -26,6 +31,15 @@ public class AnalyticsRepository {
     public AnalyticsRepository(Context context) {
         this.context = context;
         this.sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    }
+
+    private ApiService apiService;
+
+    // Konstruktor tambahan jika ingin menggunakan API
+    public AnalyticsRepository(Context context, ApiService apiService) {
+        this.context = context;
+        this.sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        this.apiService = apiService;
     }
 
     public AnalyticsData getAnalyticsData() {
@@ -198,5 +212,13 @@ public class AnalyticsRepository {
         sharedPreferences.edit()
                 .putLong(KEY_LAST_PERIOD_DATE, dateInMillis)
                 .apply();
+    }
+    // Tambahkan method ini di bagian paling bawah sebelum kurung penutup class
+    public void fetchAnalyticsFromApi(String token, Callback<List<Analytic>> callback) {
+        if (apiService != null) {
+            apiService.getMyAnalytics("Bearer " + token).enqueue(callback);
+        } else {
+            callback.onFailure(null, new Throwable("ApiService not initialized"));
+        }
     }
 }

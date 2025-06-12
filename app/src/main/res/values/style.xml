@@ -9,5 +9,71 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textStyle">bold</item>
         <item name="android:padding">8dp</item>
+        <?xml version="1.0" encoding="utf-8"?>
+        <resources>
+
+            <!-- Base application theme -->
+            <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+                <item name="colorPrimary">@color/pink_primary</item>
+                <item name="colorPrimaryDark">@color/pink_dark</item>
+                <item name="colorAccent">@color/pink_primary</item>
+                <item name="android:windowBackground">@color/white</item>
+                <item name="android:statusBarColor">@color/pink_primary</item>
+            </style>
+
+            <!-- Pink Switch Theme -->
+            <style name="PinkSwitchTheme" parent="Theme.AppCompat.Light">
+                <item name="colorControlActivated">@color/pink_primary</item>
+                <item name="colorSwitchThumbNormal">@color/light_gray</item>
+                <item name="android:colorForeground">@color/pink_light</item>
+            </style>
+
+            <!-- Card Style -->
+            <style name="CardStyle">
+                <item name="android:layout_margin">8dp</item>
+                <item name="cardCornerRadius">12dp</item>
+                <item name="cardElevation">4dp</item>
+                <item name="cardBackgroundColor">@color/white</item>
+            </style>
+
+            <!-- Button Style -->
+            <style name="ButtonStyle" parent="Widget.AppCompat.Button">
+                <item name="android:background">@drawable/button_pink_rounded</item>
+                <item name="android:textColor">@color/white</item>
+                <item name="android:textSize">16sp</item>
+                <item name="android:fontFamily">@font/roboto_medium</item>
+                <item name="android:paddingTop">12dp</item>
+                <item name="android:paddingBottom">12dp</item>
+                <item name="android:paddingStart">24dp</item>
+                <item name="android:paddingEnd">24dp</item>
+                <item name="android:layout_margin">8dp</item>
+            </style>
+
+            <!-- Text Styles -->
+            <style name="TitleTextStyle">
+                <item name="android:textSize">20sp</item>
+                <item name="android:textColor">@color/dark_gray</item>
+                <item name="android:fontFamily">@font/roboto_bold</item>
+            </style>
+
+            <style name="SubtitleTextStyle">
+                <item name="android:textSize">16sp</item>
+                <item name="android:textColor">@color/dark_gray</item>
+                <item name="android:fontFamily">@font/roboto_medium</item>
+            </style>
+
+            <style name="BodyTextStyle">
+                <item name="android:textSize">14sp</item>
+                <item name="android:textColor">@color/gray</item>
+                <item name="android:fontFamily">@font/roboto_regular</item>
+            </style>
+
+            <!-- Dialog Style -->
+            <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+                <item name="colorAccent">@color/pink_primary</item>
+                <item name="android:textColorPrimary">@color/dark_gray</item>
+            </style>
+
+        </resources>
     </style>
 </resources>

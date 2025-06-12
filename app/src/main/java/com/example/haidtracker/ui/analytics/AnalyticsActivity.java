@@ -16,39 +16,29 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.haidtracker.R;
 import com.example.haidtracker.data.model.analytics.AnalyticsData;
-
-// IMPOR MPAndroidChart
+import com.example.haidtracker.ui.auth.SignInActivity;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry; // Penting: Ini Entry dari MPAndroidChart
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate; // Untuk warna default
 
-// IMPOR GraphView DIHAPUS
-// import com.jjoe64.graphview.GraphView;
-// import com.jjoe64.graphview.series.DataPoint;
-// import com.jjoe64.graphview.series.LineGraphSeries;
-
-import java.util.ArrayList; // Pastikan ini ada
-import java.util.List; // Pastikan ini ada
+import java.util.ArrayList;
+import java.util.List;
 
 public class AnalyticsActivity extends AppCompatActivity {
 
     private AnalyticsViewModel viewModel;
 
-    // UI Components
-    private TextView tvHariKe;
-    private TextView tvMasaSubur;
-    private TextView tvMasaOvulasi;
-    private TextView tvSiklus;
-    private EditText etVolume;
-    private EditText etKeluhan;
+    private TextView tvHariKe, tvMasaSubur, tvMasaOvulasi, tvSiklus;
+    private EditText etVolume, etKeluhan;
     private Button btnSimpan;
-    private LineChart lineChart; // <<< UBAH DARI GraphView menjadi LineChart
+    private LineChart lineChart;
+
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +52,21 @@ public class AnalyticsActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Ambil token
+        token = getSharedPreferences("user_session", MODE_PRIVATE).getString("auth_token", null);
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(this, "Token tidak ditemukan. Silakan login ulang.", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return;
+        }
+
         initViewModel();
         initViews();
         setupObservers();
         setupClickListeners();
 
-        // Load initial data
-        viewModel.loadAnalyticsData();
+        viewModel.loadAnalyticsData(); // ✅ Pastikan method ini menerima token
     }
 
     private void initViewModel() {
@@ -84,106 +82,85 @@ public class AnalyticsActivity extends AppCompatActivity {
         etVolume = findViewById(R.id.et_volume);
         etKeluhan = findViewById(R.id.et_keluhan);
         btnSimpan = findViewById(R.id.btn_simpan);
-        lineChart = findViewById(R.id.graph); // <<< UBAH DARI graphView menjadi lineChart
+        lineChart = findViewById(R.id.graph);
 
-        setupChart(); // <<< UBAH NAMA METODE
+        setupChart();
     }
 
-    // --- AWAL PERUBAHAN CHARTING DENGAN MPAndroidChart ---
-    private void setupChart() { // <<< UBAH NAMA METODE
-        // Basic chart setup
-        lineChart.getDescription().setEnabled(false); // Sembunyikan deskripsi
+    private void setupChart() {
+        lineChart.getDescription().setEnabled(false);
         lineChart.setTouchEnabled(true);
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(true);
         lineChart.setPinchZoom(true);
         lineChart.setDrawGridBackground(false);
 
-        // X-axis setup
         XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM); // Posisi label X di bawah
-        xAxis.setDrawGridLines(false); // Sembunyikan garis grid vertikal
-        xAxis.setGranularity(1f); // Interval 1 untuk label
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(new String[]{"1", "2", "3", "4", "5", "6", "7"})); // Contoh label hari
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(new String[]{"1", "2", "3", "4", "5", "6", "7"}));
 
-        // Left Y-axis setup
         YAxis leftAxis = lineChart.getAxisLeft();
-        leftAxis.setAxisMinimum(0f); // Minimum Y
-        leftAxis.setAxisMaximum(5f); // Maximum Y
-        leftAxis.setDrawGridLines(true); // Tampilkan garis grid horizontal
-        leftAxis.setGranularity(1f); // Interval 1 untuk label
+        leftAxis.setAxisMinimum(0f);
+        leftAxis.setAxisMaximum(5f);
+        leftAxis.setDrawGridLines(true);
+        leftAxis.setGranularity(1f);
 
-        // Right Y-axis (disable if not needed)
-        lineChart.getAxisRight().setEnabled(false); // Matikan Y-axis kanan
-
-        lineChart.animateX(1500); // Animasi pada sumbu X
+        lineChart.getAxisRight().setEnabled(false);
+        lineChart.animateX(1500);
     }
 
-    private void updateGraph(List<Entry> dataPoints) { // <<< UBAH TIPE PARAMETER KE List<Entry>
+    private void updateGraph(List<Entry> dataPoints) {
         LineDataSet dataSet;
-
         if (lineChart.getData() != null && lineChart.getData().getDataSetCount() > 0) {
-            // Jika data sudah ada, update data yang ada
             dataSet = (LineDataSet) lineChart.getData().getDataSetByIndex(0);
             dataSet.setValues(dataPoints);
             lineChart.getData().notifyDataChanged();
             lineChart.notifyDataSetChanged();
         } else {
-            // Jika belum ada data, buat dataset baru
-            dataSet = new LineDataSet(dataPoints, "Intensitas Aliran"); // Label dataset
-
-            // Kustomisasi penampilan dataset
-            dataSet.setColor(getResources().getColor(R.color.pink_primary, null)); // Warna garis
-            dataSet.setCircleColor(getResources().getColor(R.color.pink_primary, null)); // Warna titik
-            dataSet.setLineWidth(3f); // Ketebalan garis
-            dataSet.setCircleRadius(5f); // Ukuran titik
-            dataSet.setDrawCircleHole(false); // Jangan gambar lubang di titik
-            dataSet.setValueTextSize(9f); // Ukuran teks nilai di atas titik
-            dataSet.setDrawValues(false); // Jangan tampilkan nilai di atas titik
-            dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER); // Garis melengkung
-            dataSet.setDrawFilled(true); // Isi area di bawah garis
-            dataSet.setFillColor(getResources().getColor(R.color.pink_primary, null)); // Warna isi area
+            dataSet = new LineDataSet(dataPoints, "Intensitas Aliran");
+            dataSet.setColor(getResources().getColor(R.color.pink_primary, null));
+            dataSet.setCircleColor(getResources().getColor(R.color.pink_primary, null));
+            dataSet.setLineWidth(3f);
+            dataSet.setCircleRadius(5f);
+            dataSet.setDrawCircleHole(false);
+            dataSet.setValueTextSize(9f);
+            dataSet.setDrawValues(false);
+            dataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
+            dataSet.setDrawFilled(true);
+            dataSet.setFillColor(getResources().getColor(R.color.pink_primary, null));
 
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();
             dataSets.add(dataSet);
-
-            LineData data = new LineData(dataSets);
-            lineChart.setData(data);
+            lineChart.setData(new LineData(dataSets));
         }
-
-        lineChart.invalidate(); // Refresh chart
+        lineChart.invalidate();
     }
-    // --- AKHIR PERUBAHAN CHARTING DENGAN MPAndroidChart ---
 
     private void setupObservers() {
-        // Observe analytics data
         viewModel.getAnalyticsData().observe(this, analyticsData -> {
             if (analyticsData != null) {
                 updateUI(analyticsData);
             }
         });
 
-        // Observe graph data
         viewModel.getGraphData().observe(this, graphData -> {
             if (graphData != null && !graphData.isEmpty()) {
-                updateGraph(graphData); // <<< MEMANGGIL UPDATE DENGAN List<Entry>
+                updateGraph(graphData);
             }
         });
 
-        // Observe loading state
         viewModel.getIsLoading().observe(this, isLoading -> {
             btnSimpan.setEnabled(!isLoading);
-            // You can add loading indicator here if needed
         });
 
-        // Observe error messages
         viewModel.getErrorMessage().observe(this, errorMessage -> {
             if (errorMessage != null && !errorMessage.isEmpty()) {
                 Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Observe success message
         viewModel.getSuccessMessage().observe(this, successMessage -> {
             if (successMessage != null && !successMessage.isEmpty()) {
                 Toast.makeText(this, successMessage, Toast.LENGTH_SHORT).show();
@@ -212,8 +189,6 @@ public class AnalyticsActivity extends AppCompatActivity {
         tvMasaOvulasi.setText(data.getMasaOvulasi() + " Hari");
         tvSiklus.setText(data.getSiklusTerakhir() + " Hari");
     }
-
-    // Metode updateGraph yang lama dihapus karena sudah diubah di atas
 
     private void clearInputFields() {
         etVolume.setText("");
