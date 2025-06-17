@@ -16,8 +16,8 @@
         android:layout_marginBottom="20dp" />
 
     <Button
+        android:id="@+id/btnEditProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit Profile"
-        android:onClick="onEditProfileClick" />
+        android:text="Edit Profile" />
 </LinearLayout>

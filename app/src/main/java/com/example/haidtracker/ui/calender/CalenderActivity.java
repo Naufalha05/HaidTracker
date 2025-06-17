@@ -32,6 +32,7 @@ import com.example.haidtracker.ui.analytics.AnalyticsActivity;
 import com.example.haidtracker.ui.profile.ProfileActivity;
 import com.example.haidtracker.ui.siklus.SiklusActivity;
 import com.example.haidtracker.ui.symptom.SymptomActivity;
+import com.example.haidtracker.util.TokenManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.app.DatePickerDialog;
@@ -98,57 +99,93 @@ public class CalenderActivity extends AppCompatActivity {
     }
 
     private void initializeComponents() {
-        monthYearText = findViewById(R.id.monthYearText);
-        calendarGrid = findViewById(R.id.calendarGrid);
-        prevMonth = findViewById(R.id.prevMonth);
-        nextMonth = findViewById(R.id.nextMonth);
-        backButton = findViewById(R.id.backButton);
-        loadingIndicator = findViewById(R.id.loadingIndicator);
-        fabAddReminder = findViewById(R.id.fabAddReminder);
+        try {
+            monthYearText = findViewById(R.id.monthYearText);
+            calendarGrid = findViewById(R.id.calendarGrid);
+            prevMonth = findViewById(R.id.prevMonth);
+            nextMonth = findViewById(R.id.nextMonth);
+            backButton = findViewById(R.id.backButton);
+            loadingIndicator = findViewById(R.id.loadingIndicator);
+            fabAddReminder = findViewById(R.id.fabAddReminder);
+
+            // Check if all required views are found
+            if (monthYearText == null || calendarGrid == null || backButton == null) {
+                Log.e(TAG, "Some required views not found in layout");
+                Toast.makeText(this, "Layout error. Please restart the app.", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error initializing components", e);
+            Toast.makeText(this, "Error initializing calendar", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Initialize API service
         apiService = ApiClient.getClient().create(ApiService.class);
 
-        // Get auth token
-        SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        authToken = "Bearer " + prefs.getString(TOKEN_KEY, "");
+        // Get auth token using TokenManager
+        authToken = TokenManager.getToken(this);
+
+        // Check if token is valid
+        if (authToken == null || authToken.trim().isEmpty()) {
+            Log.e(TAG, "No valid auth token found, redirecting to login");
+            Toast.makeText(this, "Please login again", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
         // Initialize calendar to current month
         currentCalendar = Calendar.getInstance();
     }
 
     private void setupClickListeners() {
-        backButton.setOnClickListener(v -> {
-            Intent intent = new Intent(CalenderActivity.this, SiklusActivity.class);
-            startActivity(intent);
-            finish();
-        });
+        try {
+            if (backButton != null) {
+                backButton.setOnClickListener(v -> {
+                    Intent intent = new Intent(CalenderActivity.this, SiklusActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
+            }
 
-        prevMonth.setOnClickListener(v -> {
-            currentCalendar.add(Calendar.MONTH, -1);
-            updateCalendarDisplay();
-        });
+            if (prevMonth != null) {
+                prevMonth.setOnClickListener(v -> {
+                    currentCalendar.add(Calendar.MONTH, -1);
+                    updateCalendarDisplay();
+                });
+            }
 
-        nextMonth.setOnClickListener(v -> {
-            currentCalendar.add(Calendar.MONTH, 1);
-            updateCalendarDisplay();
-        });
+            if (nextMonth != null) {
+                nextMonth.setOnClickListener(v -> {
+                    currentCalendar.add(Calendar.MONTH, 1);
+                    updateCalendarDisplay();
+                });
+            }
+
+            // Add reminder button click listener
+            if (fabAddReminder != null) {
+                fabAddReminder.setOnClickListener(v -> {
+                    showAddReminderDialog();
+                });
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error setting up click listeners", e);
+        }
         
-        // Add reminder button click listener
-        fabAddReminder.setOnClickListener(v -> {
-            showAddReminderDialog();
-        });
-        
-        // Navigation untuk bottom navbar (jika ada)
-        // Tambahkan ini jika CalenderActivity memiliki bottom navigation
-        findViewById(R.id.menu_siklus).setOnClickListener(v -> 
+        // Navigation untuk bottom navbar - commented out karena ID tidak ada di layout
+        // Jika ingin menambahkan navigation, pastikan ID ada di layout terlebih dahulu
+        /*
+        findViewById(R.id.menu_siklus).setOnClickListener(v ->
             startActivity(new Intent(this, SiklusActivity.class)));
-        findViewById(R.id.analisis).setOnClickListener(v -> 
+        findViewById(R.id.analisis).setOnClickListener(v ->
             startActivity(new Intent(this, AnalyticsActivity.class)));
-        findViewById(R.id.content).setOnClickListener(v -> 
+        findViewById(R.id.content).setOnClickListener(v ->
             startActivity(new Intent(this, SymptomActivity.class)));
-        findViewById(R.id.menu_icon).setOnClickListener(v -> 
+        findViewById(R.id.menu_icon).setOnClickListener(v ->
             startActivity(new Intent(this, ProfileActivity.class)));
+        */
     }
 
     private void initializeCalendar() {
@@ -365,10 +402,23 @@ public class CalenderActivity extends AppCompatActivity {
     }
 
     private void addIndicator(TextView dayText, String color, boolean isSmall) {
-        GradientDrawable indicator = new GradientDrawable();
-        indicator.setShape(GradientDrawable.OVAL);
-        indicator.setColor(Color.parseColor(color));
-        dayText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.circle_shape);
+        try {
+            // Create a simple colored circle indicator
+            GradientDrawable indicator = new GradientDrawable();
+            indicator.setShape(GradientDrawable.OVAL);
+            indicator.setColor(Color.parseColor(color));
+
+            // Set size based on isSmall parameter
+            int size = isSmall ? 8 : 12;
+            indicator.setSize(size, size);
+
+            // Add as compound drawable at bottom
+            dayText.setCompoundDrawablesWithIntrinsicBounds(null, null, null, indicator);
+        } catch (Exception e) {
+            Log.e(TAG, "Error adding indicator", e);
+            // Fallback: just change text color slightly
+            dayText.setTextColor(Color.parseColor(color));
+        }
     }
 
     private void onDateClicked(Calendar date) {
@@ -406,15 +456,24 @@ public class CalenderActivity extends AppCompatActivity {
     }
     
     private void showAddReminderDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_reminder, null);
-        builder.setView(dialogView);
-        
-        EditText etTitle = dialogView.findViewById(R.id.etTitle);
-        EditText etDescription = dialogView.findViewById(R.id.etDescription);
-        EditText etRemindAt = dialogView.findViewById(R.id.etRemindAt);
-        Button btnSave = dialogView.findViewById(R.id.btnSave);
-        Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+        try {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_reminder, null);
+            builder.setView(dialogView);
+
+            EditText etTitle = dialogView.findViewById(R.id.etTitle);
+            EditText etDescription = dialogView.findViewById(R.id.etDescription);
+            EditText etRemindAt = dialogView.findViewById(R.id.etRemindAt);
+            Button btnSave = dialogView.findViewById(R.id.btnSave);
+            Button btnCancel = dialogView.findViewById(R.id.btnCancel);
+
+            // Check if all views are found
+            if (etTitle == null || etDescription == null || etRemindAt == null ||
+                btnSave == null || btnCancel == null) {
+                Log.e(TAG, "Some dialog views not found");
+                Toast.makeText(this, "Error opening dialog", Toast.LENGTH_SHORT).show();
+                return;
+            }
         
         AlertDialog dialog = builder.create();
         
@@ -443,9 +502,13 @@ public class CalenderActivity extends AppCompatActivity {
             dialog.dismiss();
         });
         
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
-        
-        dialog.show();
+            btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+            dialog.show();
+        } catch (Exception e) {
+            Log.e(TAG, "Error showing add reminder dialog", e);
+            Toast.makeText(this, "Error opening reminder dialog", Toast.LENGTH_SHORT).show();
+        }
     }
     
     private void showDateTimePicker(final EditText editText) {

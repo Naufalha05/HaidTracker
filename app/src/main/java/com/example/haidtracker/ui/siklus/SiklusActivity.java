@@ -31,6 +31,8 @@ import com.example.haidtracker.ui.calender.CalenderActivity;
 import com.example.haidtracker.ui.content.ContentActivity;
 import com.example.haidtracker.ui.profile.ProfileActivity;
 import com.example.haidtracker.util.TokenManager;
+import com.example.haidtracker.util.CycleDebugger;
+import com.example.haidtracker.util.ApiTester;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -82,21 +84,60 @@ public class SiklusActivity extends AppCompatActivity implements siklusAdapter.O
 
         // Initialize ViewModel
         viewModel = new ViewModelProvider(this).get(SiklusViewModel.class);
-        
+
         // Initialize API service
         apiService = ApiClient.getClient().create(ApiService.class);
         authToken = TokenManager.getToken(this);
+
+        // Check if token is valid
+        if (authToken == null || authToken.trim().isEmpty()) {
+            Log.e(TAG, "No valid auth token found, redirecting to login");
+            TokenManager.clearToken(this);
+            Intent intent = new Intent(this, SignInActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         // Observe cycles data
         viewModel.getCycles().observe(this, cycles -> {
             if (cycles != null) {
                 adapter.updateData(cycles);
-            } else {
-                Toast.makeText(this, "Failed to load cycles", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Updated adapter with " + cycles.size() + " cycles");
             }
         });
 
+        // Observe error messages
+        viewModel.getErrorMessage().observe(this, errorMsg -> {
+            if (errorMsg != null && !errorMsg.trim().isEmpty()) {
+                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+                Log.e(TAG, "Error from ViewModel: " + errorMsg);
+
+                // If it's an auth error, redirect to login
+                if (errorMsg.contains("Unauthorized") || errorMsg.contains("Authentication token")) {
+                    TokenManager.clearToken(this);
+                    Intent intent = new Intent(this, SignInActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
+        // Observe loading state
+        viewModel.getIsLoading().observe(this, isLoading -> {
+            // You can add a progress bar here if needed
+            Log.d(TAG, "Loading state: " + isLoading);
+        });
+
+        // Debug token and API before loading cycles
+        Log.d(TAG, "=== DEBUGGING CYCLE LOADING ISSUE ===");
+        CycleDebugger.debugTokenManager(this);
+        CycleDebugger.debugCycleLoading(this);
+
         // Load cycles
+        Log.d(TAG, "Starting to fetch cycles");
         viewModel.fetchCycles(authToken);
 
         // Navigasi menu bawah
@@ -107,6 +148,21 @@ public class SiklusActivity extends AppCompatActivity implements siklusAdapter.O
 
         // Setup add cycle button (FAB)
         fabPlus.setOnClickListener(v -> showAddCycleDialog());
+
+        // Add long click for API testing (temporary for debugging)
+        fabPlus.setOnLongClickListener(v -> {
+            Log.d(TAG, "Running API test...");
+            ApiTester.testCycleApi(this, (success, message) -> {
+                runOnUiThread(() -> {
+                    ApiTester.showTestResult(this, success, message);
+                    if (success) {
+                        // If test successful, try to reload cycles
+                        viewModel.fetchCycles(authToken);
+                    }
+                });
+            });
+            return true;
+        });
 
         // Logout
         btnLogout.setOnClickListener(v -> {
