@@ -73,9 +73,7 @@
             android:exported="false" />
 
         <!-- Reminder Activity (newly added) -->
-        <activity
-            android:name=".ui.reminder.ReminderActivity"
-            android:exported="true" /> <!-- Set to true if this activity needs to be accessible from outside -->
+
 
         <!-- Other Activities -->
         <activity
