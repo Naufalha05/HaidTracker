@@ -1,11 +1,17 @@
 package com.example.haidtracker.data.model.reminder;
 
-public class CreateReminderRequest {
-    private String title;
-    private String description;
-    private String remindAt;
+import com.google.gson.annotations.SerializedName;
 
-    public CreateReminderRequest() {}
+public class CreateReminderRequest {
+    
+    @SerializedName("title")
+    private String title;
+    
+    @SerializedName("description")
+    private String description;
+    
+    @SerializedName("remindAt")
+    private String remindAt;
 
     public CreateReminderRequest(String title, String description, String remindAt) {
         this.title = title;
@@ -13,13 +19,27 @@ public class CreateReminderRequest {
         this.remindAt = remindAt;
     }
 
-    // Getters
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public String getRemindAt() { return remindAt; }
+    public String getTitle() {
+        return title;
+    }
 
-    // Setters
-    public void setTitle(String title) { this.title = title; }
-    public void setDescription(String description) { this.description = description; }
-    public void setRemindAt(String remindAt) { this.remindAt = remindAt; }
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getRemindAt() {
+        return remindAt;
+    }
+
+    public void setRemindAt(String remindAt) {
+        this.remindAt = remindAt;
+    }
 }

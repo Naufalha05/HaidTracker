@@ -1,72 +1,122 @@
 package com.example.haidtracker.ui.profile;
 
-import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
+import android.util.Log;
+
+import com.example.haidtracker.data.api.ApiClient;
+import com.example.haidtracker.data.api.ApiService;
+import com.example.haidtracker.data.model.user.User;
+import com.example.haidtracker.data.repository.AuthRepository;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfileController {
-    private final Activity activity;
-    private final ProfileViewBinder view;
+    private static final String TAG = "ProfileController";
+    
+    private ApiService apiService;
+    private AuthRepository authRepository;
+    private Context context;
 
-    public ProfileController(Activity activity, ProfileViewBinder view) {
-        this.activity = activity;
-        this.view = view;
+    public ProfileController(Context context) {
+        this.context = context;
+        this.apiService = ApiClient.getClient().create(ApiService.class);
+        this.authRepository = new AuthRepository(context);
     }
 
-    public void setUp() {
-        setUserData("Indah Purnama Sari", "indahips409@gmail.com");
-        setClickListeners();
+    public void loadUserProfile(ProfileCallback callback) {
+        String authToken = authRepository.getToken();
+        
+        if (authToken == null || authToken.isEmpty()) {
+            callback.onError("No authentication token found");
+            return;
+        }
+
+        Log.d(TAG, "Loading user profile...");
+
+        // Use getUserProfile method from ApiService
+        apiService.getUserProfile(authToken).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User user = response.body();
+                    Log.d(TAG, "User profile loaded successfully: " + user.getEmail());
+                    callback.onSuccess(user);
+                } else {
+                    String errorMsg = "Failed to load profile: " + response.code();
+                    Log.e(TAG, errorMsg);
+                    callback.onError(errorMsg);
+                    
+                    // If unauthorized, clear token
+                    if (response.code() == 401) {
+                        authRepository.logout();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                String errorMsg = "Network error: " + t.getMessage();
+                Log.e(TAG, errorMsg, t);
+                callback.onError(errorMsg);
+            }
+        });
     }
 
-    private void setUserData(String name, String email) {
-        if (view.txtName != null) view.txtName.setText(name);
-        if (view.txtEmail != null) view.txtEmail.setText(email);
-        if (view.txtTitle != null) view.txtTitle.setText("Menu Lainnya");
+    public void updateUserProfile(User user, ProfileCallback callback) {
+        String authToken = authRepository.getToken();
+        
+        if (authToken == null || authToken.isEmpty()) {
+            callback.onError("No authentication token found");
+            return;
+        }
+
+        Log.d(TAG, "Updating user profile...");
+
+        apiService.updateUserProfile(authToken, user).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    User updatedUser = response.body();
+                    Log.d(TAG, "User profile updated successfully");
+                    callback.onSuccess(updatedUser);
+                } else {
+                    String errorMsg = "Failed to update profile: " + response.code();
+                    Log.e(TAG, errorMsg);
+                    callback.onError(errorMsg);
+                    
+                    // If unauthorized, clear token
+                    if (response.code() == 401) {
+                        authRepository.logout();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                String errorMsg = "Network error: " + t.getMessage();
+                Log.e(TAG, errorMsg, t);
+                callback.onError(errorMsg);
+            }
+        });
     }
 
-    private void setClickListeners() {
-        if (view.btnBack != null) {
-            view.btnBack.setOnClickListener(v -> activity.onBackPressed());
-        }
-        if (view.btnMore != null) {
-            view.btnMore.setOnClickListener(v -> showToast("Opening profile details..."));
-        }
-        if (view.cardPremium != null) {
-            view.cardPremium.setOnClickListener(v -> showToast("Opening Clue Plus features..."));
-        }
-        if (view.cardMode != null) {
-            view.cardMode.setOnClickListener(v -> showToast("Opening mode settings..."));
-        }
-        if (view.rowHealthNotes != null) {
-            view.rowHealthNotes.setOnClickListener(v -> showToast("Opening health notes..."));
-        }
-        if (view.rowPregnancyPrevention != null) {
-            view.rowPregnancyPrevention.setOnClickListener(v -> showToast("Opening pregnancy prevention settings..."));
-        }
-        if (view.rowCustomize != null) {
-            view.rowCustomize.setOnClickListener(v -> showToast("Opening monitoring customization..."));
-        }
-        if (view.rowNotifications != null) {
-            view.rowNotifications.setOnClickListener(v -> showToast("Opening notification settings..."));
-        }
-        if (view.rowSettings != null) {
-            view.rowSettings.setOnClickListener(v -> showToast("Opening app settings..."));
-        }
-        if (view.rowConnect != null) {
-            view.rowConnect.setOnClickListener(v -> showToast("Opening Clue Connect..."));
-        }
-        if (view.rowGuide != null) {
-            view.rowGuide.setOnClickListener(v -> showToast("Opening monitoring guide..."));
-        }
+    public void logout() {
+        authRepository.logout();
+        Log.d(TAG, "User logged out");
     }
 
-    public void refreshUserData() {
-        // Bisa ambil dari SharedPreferences atau API
-        // Contoh simulasi update
-        setUserData("Indah Purnama Sari", "indahips409@gmail.com");
+    public boolean isLoggedIn() {
+        return authRepository.isLoggedIn();
     }
 
-    private void showToast(String message) {
-        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
+    public String getToken() {
+        return authRepository.getToken();
+    }
+
+    public interface ProfileCallback {
+        void onSuccess(User user);
+        void onError(String error);
     }
 }

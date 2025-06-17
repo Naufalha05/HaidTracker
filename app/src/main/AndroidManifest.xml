@@ -2,8 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.haidtracker">
+
     <!-- Izin akses internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -15,44 +17,48 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HaidTracker"
         tools:targetApi="31">
+
+        <!-- Activity declarations -->
+
+        <!-- Admin Dashboard Activity -->
         <activity
-            android:name=".ui.analytics.AnalyticsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.content.ContentActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.content"
-            android:exported="false" />
-        <activity
-            android:name=".data.api.TesActivity"
-            android:exported="false" /> <!-- SplashActivity sebagai entry point -->
+            android:name=".ui.admin.AdminDashboardActivity"
+            android:exported="true" />
+
+        <!-- SplashActivity as entry point -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.HaidTracker">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Intro Slides -->
+        </activity>
+
+        <!-- Intro Slides -->
         <activity
             android:name=".ui.intro.IntroSlide"
             android:exported="false"
             tools:ignore="Instantiatable" />
         <activity
             android:name=".ui.intro.IntroActivity"
-            android:exported="false" /> <!-- Main -->
+            android:exported="false" />
+
+        <!-- Main -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" /> <!-- Page Login/Register -->
+            android:exported="false" />
+
+        <!-- Page Login/Register -->
         <activity
             android:name=".ui.auth.SignInActivity"
             android:exported="false" />
         <activity
             android:name=".ui.auth.SignUpActivity"
-            android:exported="false" /> <!-- Home Pages -->
+            android:exported="false" />
+
+        <!-- Home Pages -->
         <activity
             android:name=".ui.profile.ProfileActivity"
             android:exported="false" />
@@ -65,6 +71,35 @@
         <activity
             android:name=".ui.home.AnalisisActivity"
             android:exported="false" />
+
+        <!-- Reminder Activity (newly added) -->
+        <activity
+            android:name=".ui.reminder.ReminderActivity"
+            android:exported="true" /> <!-- Set to true if this activity needs to be accessible from outside -->
+
+        <!-- Other Activities -->
+        <activity
+            android:name=".ui.analytics.AnalyticsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.content.ContentActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.content"
+            android:exported="false" />
+        <activity
+            android:name=".data.api.TesActivity"
+            android:exported="false" />
+
+        <!-- Declare other activities being used in the app -->
+        <activity android:name=".ui.admin.AdminUsersDetailActivity" android:exported="true" />
+        <activity android:name=".ui.admin.AdminCyclesActivity" android:exported="true" />
+        <activity android:name=".ui.admin.AdminSymptomsActivity" android:exported="true" />
+        <activity android:name=".ui.admin.AdminRemindersActivity" android:exported="true" />
+        <activity android:name=".ui.admin.AdminProfileActivity" android:exported="true" />
+        <activity android:name=".ui.admin.AdminUsersActivity" android:exported="true" />
+        <activity android:name=".ui.admin.AdminAnalyticsActivity" android:exported="true" />
+
     </application>
 
 </manifest>

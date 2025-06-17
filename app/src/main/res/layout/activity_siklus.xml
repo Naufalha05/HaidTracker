@@ -44,6 +44,18 @@
         android:layout_alignTop="@id/menu_icon"
         android:layout_marginTop="2dp" />
 
+    <!-- RecyclerView untuk menampilkan daftar siklus -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewCycles"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/header_title"
+        android:layout_above="@id/bottom_nav"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
+        android:padding="8dp"
+        android:clipToPadding="false" />
+
     <!-- Bottom Navigation Bar -->
     <LinearLayout
         android:id="@+id/bottom_nav"

@@ -1,5 +1,8 @@
 package com.example.haidtracker.data.model.symptom;
 
+import com.google.gson.annotations.SerializedName;
+import java.util.Date;
+
 public class Symptom {
     private int id;
     private String date;

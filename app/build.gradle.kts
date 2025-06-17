@@ -54,7 +54,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
 
-    // 📊 MPAndroidChart (Kini Konsisten via libs)
+    // MPAndroidChart
     implementation(libs.mpandroidchart)
 
     // Testing

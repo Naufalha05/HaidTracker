@@ -1,29 +1,96 @@
 package com.example.haidtracker.data.model.user;
 
+import com.google.gson.annotations.SerializedName;
+import java.util.Date;
+
 public class User {
-    private String id;
-    private String email;
+
+    @SerializedName("id")
+    private int id;
+
+    @SerializedName("name")
     private String name;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("role")
     private String role;
+
+    @SerializedName("createdAt")
+    private Date createdAt;
+
+    @SerializedName("updatedAt")
+    private Date updatedAt;
 
     public User() {}
 
-    public User(String id, String email, String name, String role) {
+    public User(int id, String name, String email, String role, Date createdAt, Date updatedAt) {
         this.id = id;
-        this.email = email;
         this.name = name;
+        this.email = email;
+        this.role = role;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
         this.role = role;
     }
 
-    // Getters
-    public String getId() { return id; }
-    public String getEmail() { return email; }
-    public String getName() { return name; }
-    public String getRole() { return role; }
+    public Date getCreatedAt() {
+        return createdAt;
+    }
 
-    // Setters
-    public void setId(String id) { this.id = id; }
-    public void setEmail(String email) { this.email = email; }
-    public void setName(String name) { this.name = name; }
-    public void setRole(String role) { this.role = role; }
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }

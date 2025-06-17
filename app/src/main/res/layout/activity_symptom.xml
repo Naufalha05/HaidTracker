@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    tools:context=".ui.symptom.SymptomActivity">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="#ff66b1"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/menu_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            app:tint="#FFFFFF" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Catatan Gejala"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <ImageButton
+            android:id="@+id/btn_logout"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_logout"
+            android:contentDescription="Logout"
+            app:tint="#FFFFFF" />
+
+    </LinearLayout>
+
+    <!-- Fact of the Day Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/factCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/headerLayout"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/gradient_pink">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💡 Fakta Hari Ini"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvFactOfTheDay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Loading fakta menarik..."
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:lineSpacingExtra="4dp" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Symptoms List -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/factCard"
+        android:layout_above="@id/bottom_nav"
+        android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="📝 Riwayat Gejala"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#ff66b1"
+                android:padding="16dp"
+                android:background="#F8F9FA" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerViewSymptoms"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="8dp"
+                android:clipToPadding="false" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- Floating Action Button -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddSymptom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_nav"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="24dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="#ff66b1"
+        app:tint="#FFFFFF"
+        android:contentDescription="Tambah Gejala" />
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:id="@+id/bottom_nav"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <!-- Left Icons -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:background="#FF69B4"
+            android:gravity="center"
+            android:layout_marginEnd="4dp"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/menu_siklus"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_cycle"
+                app:tint="@android:color/white"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:id="@+id/menu_calender"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_calender"
+                app:tint="@android:color/white" />
+        </LinearLayout>
+
+        <!-- Center FAB -->
+        <FrameLayout
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:background="@drawable/fab_circle"
+            android:layout_marginHorizontal="4dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="+"
+                android:textSize="32sp"
+                android:gravity="center"
+                android:textColor="#800000" />
+        </FrameLayout>
+
+        <!-- Right Icons -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:background="#FF69B4"
+            android:gravity="center"
+            android:layout_marginStart="4dp"
+            android:padding="8dp">
+
+            <ImageView
+                android:id="@+id/analisis"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_analisis"
+                app:tint="@android:color/white"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:id="@+id/content"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_symptom"
+                app:tint="#FFD700"
+                android:background="@drawable/selected_nav_background" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+

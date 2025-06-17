@@ -87,7 +87,7 @@
                         app:boxStrokeColor="#C2185B">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/name"
+                            android:id="@+id/etName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
@@ -113,7 +113,7 @@
                         app:boxStrokeColor="#C2185B">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/email"
+                            android:id="@+id/etEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
@@ -140,7 +140,34 @@
                         app:endIconMode="password_toggle">
 
                         <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/password"
+                            android:id="@+id/etPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins"
+                            android:inputType="textPassword"
+                            android:textColor="#C2185B" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Spacer -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp" />
+
+                    <!-- Confirm Password -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Konfirmasi Kata Sandi"
+                        app:boxBackgroundMode="outline"
+                        app:boxCornerRadiusTopStart="16dp"
+                        app:boxCornerRadiusTopEnd="16dp"
+                        app:boxCornerRadiusBottomStart="16dp"
+                        app:boxCornerRadiusBottomEnd="16dp"
+                        app:boxStrokeColor="#C2185B"
+                        app:endIconMode="password_toggle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etConfirmPassword"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins"
@@ -150,7 +177,7 @@
 
                     <!-- Tombol Daftar -->
                     <Button
-                        android:id="@+id/btnRegister"
+                        android:id="@+id/btnSignUp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
@@ -159,6 +186,16 @@
                         android:text="Daftar"
                         android:textColor="#FFFFFF"
                         android:textStyle="bold" />
+
+                    <!-- Loading Bar -->
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:visibility="gone" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -176,7 +213,7 @@
                     android:textColor="#757575"/>
 
                 <TextView
-                    android:id="@+id/login"
+                    android:id="@+id/tvSignIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text=" Login"

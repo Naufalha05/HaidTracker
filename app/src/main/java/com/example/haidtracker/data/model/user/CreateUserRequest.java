@@ -1,29 +1,67 @@
 package com.example.haidtracker.data.model.user;
 
+import com.google.gson.annotations.SerializedName;
+
 public class CreateUserRequest {
-    private String email;
+
+    @SerializedName("name")
     private String name;
+
+    @SerializedName("email")
+    private String email;
+
+    @SerializedName("password")
     private String password;
+
+    @SerializedName("role")
     private String role;
 
-    public CreateUserRequest() {}
-
-    public CreateUserRequest(String email, String name, String password, String role) {
-        this.email = email;
+    public CreateUserRequest(String name, String email, String password, String role) {
         this.name = name;
+        this.email = email;
         this.password = password;
         this.role = role;
     }
 
-    // Getters
-    public String getEmail() { return email; }
-    public String getName() { return name; }
-    public String getPassword() { return password; }
-    public String getRole() { return role; }
+    public String getName() {
+        return name;
+    }
 
-    // Setters
-    public void setEmail(String email) { this.email = email; }
-    public void setName(String name) { this.name = name; }
-    public void setPassword(String password) { this.password = password; }
-    public void setRole(String role) { this.role = role; }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateUserRequest{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='[HIDDEN]'" +
+                ", role='" + role + '\'' +
+                '}';
+    }
 }
